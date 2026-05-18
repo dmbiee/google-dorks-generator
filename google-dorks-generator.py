@@ -1,59 +1,9 @@
 import urllib.parse
 
+from CONSTANTS import *
 
-SOCIAL_NETWORKS = " site:twitter.com OR site:facebook.com OR site:instagram.com OR site:tiktok.com OR site:youtube.com OR site:linkedin.com "
-FILE_TYPES = " filetype:pdf OR filetype:doc OR filetype:docx "
-GENERAL_SEARCH_LINKS_TEMPLATE = {
-    "google_web" : "https://www.google.com/search?q=|PROMPT|",
-    "googele_img":"https://www.google.com/search?q=|PROMPT|&udm=2",
-    "bing_web":"https://www.bing.com/search?q=|PROMPT|",
-    "bing_img":"https://www.bing.com/images/search?q=|PROMPT|&first=1",
-    "yahoo":"https://search.yahoo.com/search?p=|PROMPT|",
-    "yandex":"https://yandex.com/search/?text=|PROMPT|",
-    "webmii":"https://webmii.com/people?n=|PROMPT|",
-}
 
-EMAIL_DOMAINS = [
-    "@gmail.com",
-    "@hotmail.com",
-    "@hotmail.es",
-    "@outlook.com",
-    "@outlook.es",
-    "@live.com",
-    "@live.es",
-    "@msn.com",
-    "@yahoo.com",
-    "@yahoo.es",
-    "@icloud.com",
-    "@me.com",
-    "@protonmail.com",
-    "@gmx.com",
-    "@gmx.es",
-    "@terra.es",
-    "@terra.com",
-    "@orange.es",
-    "@telefonica.net",
-    "@movistar.es",
-    "@jazztel.es",
-    "@euskalnet.net",
-    "@ono.com",
-    "@mail.com",
-    "@aol.com  ",
-]
 
-USERNAME_MASK = [
-    "|USERNAME|",
-    "|USERNAME|1",
-    "|USERNAME|123",
-    "_|USERNAME|",
-    "__|USERNAME|",
-    "_|USERNAME|_",
-    "|USERNAME|_",
-    "|USERNAME|__",
-    "0|USERNAME|",
-    ".|USERNAME|",
-    "|USERNAME|.",
-    ".|USERNAME|."]
 
 #user_input = input("Name of target: ")
 
@@ -114,7 +64,7 @@ def general_search_service(list_to_search):
     
     for i in list_to_search:
         for key, link in GENERAL_SEARCH_LINKS_TEMPLATE.items():
-            print(f"{key} for {i} -> {link.replace("|PROMPT|", urllib.parse.quote(i))}")
+            print(f"{key} for {i} -> {link.replace("|REPLACE|", urllib.parse.quote(i))}")
 
 
 def main():
