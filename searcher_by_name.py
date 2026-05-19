@@ -6,21 +6,37 @@ from CONSTANTS import *
 class SearcherByName:
 
     def __init__(self, user_input, optional=None, year="0000"):
+        # inputs
         self.user_input = user_input
-        self.year = year
-        self.split_user_input = self.user_input.split()
-        
+        self.year = year        
         self.optional = optional.split() if optional else []
-            
-        #temp variables for generating
-        self.mutate_variants_of_name = []
-        self.special_search_prompts = []
-        self.result_generate_links = []
         
+        # raw data
+        self.split_user_input = self.user_input.split()
+
+        
+        # pipeline vars 
+        self.mutate_variants_of_name = []
+        self.search_prompts = []
+        self.result_data = []
+        
+        # pipeline vars for email generator
         self.mutate_variants_of_name_for_email = []
         self.result_generate_emails = []
 
 #-----------START-NAME-SEARCH-PROMPT----------
+
+    
+
+
+
+
+
+
+
+
+
+
 
     def _manual_append_mutate(self):
         
