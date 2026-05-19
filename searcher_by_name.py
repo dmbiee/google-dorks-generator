@@ -11,6 +11,7 @@ from CONSTANTS import (
 class SearcherByName:
 
     def __init__(self, user_input, optional=None, year="0000"):
+        
         # inputs
         self.user_input = user_input
         self.year = year        
@@ -135,8 +136,6 @@ class SearcherByName:
     def _generate_email_variants(self):
 
         email_separators = ["", ".", "-", "_"]
-
-        
 
         #---automatic---
         for separator in email_separators:
