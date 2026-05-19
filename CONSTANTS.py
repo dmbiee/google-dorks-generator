@@ -44,6 +44,7 @@ EMAIL_DOMAINS = [
     "@aol.com  ",
 ]
 
+# Mask for serching by username
 USERNAME_MASK = [
     "|REPLACE|",
     "|REPLACE|1",
@@ -57,3 +58,11 @@ USERNAME_MASK = [
     ".|REPLACE|",
     "|REPLACE|.",
     ".|REPLACE|."]
+    
+# Separators between FirstName and SecondName
+SEPARATORS = [
+        " ",
+        ".",
+        ", ",
+        "_",
+        "",]

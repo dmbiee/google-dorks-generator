@@ -37,12 +37,7 @@ def name_controller(user_input : str):
     splited_user_input = user_input.split(" ")
     list_of_variants_for_name = []
     
-    separators = [
-        " ",
-        ".",
-        ", ",
-        "_",
-        "",]
+    
     
     for separator in separators:
         list_of_variants_for_name.append(f'"{separator.join(splited_user_input)}"')
