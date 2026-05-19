@@ -5,6 +5,7 @@ from CONSTANTS import (
     SOCIAL_NETWORKS,
     FILE_TYPES,
     GENERAL_SEARCH_LINKS_TEMPLATE,
+    EMAIL_DOMAINS,
 )
 
 class SearcherByName:
@@ -17,6 +18,7 @@ class SearcherByName:
         
         # raw data
         self.split_user_input = self.user_input.split()
+        self.splited_user_input_lower = self.user_input.lower().split()
 
         
         # pipeline vars 
@@ -38,6 +40,10 @@ class SearcherByName:
             self._generate_name_variants()
                 ._generate_search_prompts()
                 ._build_links()
+        )
+        (
+            self._generate_email_variants()
+                ._build_emails()
         )
         return self
 
@@ -97,7 +103,6 @@ class SearcherByName:
                 
                 final_url =link.replace("|REPLACE|", urllib.parse.quote(search_prompt))
 
-
                 self.result_data.append({
                     "prompt": search_prompt,
                     "service": service,
@@ -109,7 +114,7 @@ class SearcherByName:
 
 #-----------OPEN-METHODS-----------
 
-    def get_data(self):
+    def get_data(self) -> list:
         """Data is a list of dicts
             Dict syntax:
         "prompt": STRING, 
@@ -121,5 +126,40 @@ class SearcherByName:
 
 #-----------END-PIPELINE-NAME-SEARCH----------
 
-#-----------START-EMAIL-GENERATOR----------
 
+
+
+#-----------PIPELINE-EMAIL-GENERATOR-BY-NAME----------
+
+#-----------STAGE-1----------
+    def _generate_email_variants(self):
+
+        email_separators = ["", ".", "-", "_"]
+
+        
+
+        #---automatic---
+        for separator in email_separators:
+            self.mutate_variants_of_name_for_email.append(separator.join(self.splited_user_input_lower)) #johnsmit
+            self.mutate_variants_of_name_for_email.append(separator.join(self.splited_user_input_lower)+self.year) #johnsmit1234
+            self.mutate_variants_of_name_for_email.append(separator.join(self.splited_user_input_lower)+self.year[2:]) #johnsmit34
+
+        #---manual---
+        self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0][0]}{self.splited_user_input_lower[1]}") # "jsmit"
+        self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0]}{self.splited_user_input_lower[1][0]}") # "johns"
+        self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0][0]}{self.splited_user_input_lower[1][0]}") # "js"
+
+        return self
+
+#-----------STAGE-2----------
+    def _build_emails(self):
+
+        for local_path in self.mutate_variants_of_name_for_email:
+            for domain_path in EMAIL_DOMAINS:
+                self.result_generate_emails.append(local_path+domain_path)
+        return self
+
+#-----------OPEN-METHODS-----------
+
+    def get_email_data(self) -> list:
+        return self.result_generate_emails

@@ -41,7 +41,7 @@ EMAIL_DOMAINS = [
     "@euskalnet.net",
     "@ono.com",
     "@mail.com",
-    "@aol.com  ",
+    "@aol.com",
 ]
 
 # Mask for serching by username
