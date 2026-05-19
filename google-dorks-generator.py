@@ -1,6 +1,7 @@
 import urllib.parse
 
 from CONSTANTS import *
+from searcher_by_name import SearcherByName
 
 
 
@@ -32,41 +33,12 @@ def email_with_domain_generator(list_of_optiones):
         for domain in EMAIL_DOMAINS:
             print(i+domain)
 
-def name_controller(user_input : str):
-
-    splited_user_input = user_input.split(" ")
-    list_of_variants_for_name = []
-    
-    
-    
-    for separator in separators:
-        list_of_variants_for_name.append(f'"{separator.join(splited_user_input)}"')
-    
-    for i in splited_user_input:
-        list_of_variants_for_name.append(f'"{i}"')
-
-    #---manual append---
-    if len(splited_user_input) >= 2:
-        list_of_variants_for_name.append(f"{splited_user_input[0][0]} {splited_user_input[1]}") # "J Smit"
-        list_of_variants_for_name.append(f"{splited_user_input[0]} {splited_user_input[1][0]}") # "John S"
-        list_of_variants_for_name.append(f'"{splited_user_input[0]} {splited_user_input[1]}" {SOCIAL_NETWORKS}')
-        list_of_variants_for_name.append(f'"{splited_user_input[0]} {splited_user_input[1]}" {FILE_TYPES}')
-
-
-    general_search_service(list_of_variants_for_name)
-
-def general_search_service(list_to_search):
-    
-    for i in list_to_search:
-        for key, link in GENERAL_SEARCH_LINKS_TEMPLATE.items():
-            print(f"{key} for {i} -> {link.replace("|REPLACE|", urllib.parse.quote(i))}")
-
-
 def main():
-    #name_controller(user_input)
-    email_name_generator(user_input)
-
-
+    #email_name_generator(user_input)
+    
+    s = SearcherByName(user_input=user_input,optional="Asturias",year=email_year)
+    for data in s.get_data():
+        print(f'-> {data["prompt"]}\nService {data["service"]} -> {data["url"]}\n')
 
 
 if __name__ == "__main__":

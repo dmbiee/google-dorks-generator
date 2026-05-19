@@ -1,7 +1,11 @@
 import urllib.parse
 
-from CONSTANTS import *
-
+from CONSTANTS import (
+    SEPARATORS,
+    SOCIAL_NETWORKS,
+    FILE_TYPES,
+    GENERAL_SEARCH_LINKS_TEMPLATE,
+)
 
 class SearcherByName:
 
@@ -24,20 +28,29 @@ class SearcherByName:
         self.mutate_variants_of_name_for_email = []
         self.result_generate_emails = []
 
-#-----------START-NAME-SEARCH-PROMPT----------
+        # RUN
+        self._run()
 
+#-----------PIPELINE-NAME-SEARCH----------
+
+    def _run(self):
+        (
+            self._generate_name_variants()
+                ._generate_search_prompts()
+                ._build_links()
+        )
+        return self
+
+#-----------STAGE-1----------
+
+    def _generate_name_variants(self):
+
+        (
+        self._manual_append_mutate()
+            ._automate_append_mutate()
+           )
+        return self
     
-
-
-
-
-
-
-
-
-
-
-
     def _manual_append_mutate(self):
         
         if len(self.split_user_input) >= 2:
@@ -47,32 +60,66 @@ class SearcherByName:
             
             self.mutate_variants_of_name.append(f"{first[0]} {last}") # "J Smit"
             self.mutate_variants_of_name.append(f"{first} {last[0]}") # "John S"
+
+        return self
             
-            # special_search_prompts(SOCIAL_NETWORKS and FILE_TYPES)
-            self.special_search_prompts.append(f'"{first} {last}" {SOCIAL_NETWORKS}')
-            self.special_search_prompts.append(f'"{first} {last}" {FILE_TYPES}')
-    
     def _automate_append_mutate(self):
         
         for separator in SEPARATORS:
-            self.mutate_variants_of_name.append(f'"{separator.join(self.split_user_input)}"')
+            self.mutate_variants_of_name.append(f'{separator.join(self.split_user_input)}')
     
         for i in self.split_user_input:
-            self.mutate_variants_of_name.append(f'"{i}"')
-            
-    def _result_line_generator(self):
-    
-        for search_prompt in self.mutate_variants_of_name:
-            for service, link in GENERAL_SEARCH_LINKS_TEMPLATE.items():
-                self.result_generate_links.append(f"{service} for {search_prompt} -> {link.replace("|REPLACE|", urllib.parse.quote(search_prompt))}")
-                self.result_generate_links.append(f"{service} for {search_prompt} + optional -> {link.replace("|REPLACE|", urllib.parse.quote(search_prompt+" ".join(self.optional)))}")
-
-                
-        for search_prompt in self.special_search_prompts:
-            for service, link in GENERAL_SEARCH_LINKS_TEMPLATE.items():
-                self.result_generate_links.append(f"{service} for {self.user_input} -> {link.replace("|REPLACE|", urllib.parse.quote(search_prompt))}")
+            self.mutate_variants_of_name.append(f'{i}')
         
-#-----------END-NAME-SEARCH-PROMPT----------
+        return self
+            
+#-----------STAGE-2----------
+            
+    def _generate_search_prompts(self):
+
+        for prompt in self.mutate_variants_of_name:
+            self.search_prompts.append(f'"{prompt}" '+ f'"{" ".join(self.optional)}"')
+
+        # special_search_prompts(SOCIAL_NETWORKS and FILE_TYPES)
+        self.search_prompts.append(f'"{" ".join(self.split_user_input)}" {SOCIAL_NETWORKS}')
+        self.search_prompts.append(f'"{" ".join(self.split_user_input)}" {FILE_TYPES}')
+
+        return self
+
+#-----------STAGE-3----------
+
+    def _build_links(self):
+
+        optional_text = " ".join(self.optional)
+
+        for search_prompt in self.search_prompts:
+            for service, link in GENERAL_SEARCH_LINKS_TEMPLATE.items():
+                
+                final_url =link.replace("|REPLACE|", urllib.parse.quote(search_prompt))
+
+
+                self.result_data.append({
+                    "prompt": search_prompt,
+                    "service": service,
+                    "url": final_url,
+                    "optional": optional_text
+                })
+        
+        return self
+
+#-----------OPEN-METHODS-----------
+
+    def get_data(self):
+        """Data is a list of dicts
+            Dict syntax:
+        "prompt": STRING, 
+        "service": STRING, 
+        "url": STRING, 
+        "optional": STRING
+        """
+        return self.result_data
+
+#-----------END-PIPELINE-NAME-SEARCH----------
 
 #-----------START-EMAIL-GENERATOR----------
 

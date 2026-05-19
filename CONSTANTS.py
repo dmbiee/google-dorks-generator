@@ -2,7 +2,7 @@
 #some constants and copy-paste variables
 # |REPLACE| will be replaced by the func that uses it
 
-SOCIAL_NETWORKS = " site:twitter.com OR site:facebook.com OR site:instagram.com OR site:tiktok.com OR site:youtube.com OR site:linkedin.com "
+SOCIAL_NETWORKS = " site:x.com OR site:facebook.com OR site:instagram.com OR site:tiktok.com OR site:youtube.com OR site:linkedin.com "
 
 FILE_TYPES = " filetype:pdf OR filetype:doc OR filetype:docx "
 
