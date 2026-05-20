@@ -53,8 +53,8 @@ class SearcherByName:
     def _generate_name_variants(self):
 
         (
-        self._manual_append_mutate()
-            ._automate_append_mutate()
+        self._automate_append_mutate()
+            ._manual_append_mutate()
            )
         return self
     
@@ -142,11 +142,12 @@ class SearcherByName:
             self.mutate_variants_of_name_for_email.append(separator.join(self.splited_user_input_lower)) #johnsmit
             self.mutate_variants_of_name_for_email.append(separator.join(self.splited_user_input_lower)+self.year) #johnsmit1234
             self.mutate_variants_of_name_for_email.append(separator.join(self.splited_user_input_lower)+self.year[2:]) #johnsmit34
-
+        
         #---manual---
-        self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0][0]}{self.splited_user_input_lower[1]}") # "jsmit"
-        self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0]}{self.splited_user_input_lower[1][0]}") # "johns"
-        self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0][0]}{self.splited_user_input_lower[1][0]}") # "js"
+        if len(self.split_user_input) >= 2:
+            self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0][0]}{self.splited_user_input_lower[1]}") # "jsmit"
+            self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0]}{self.splited_user_input_lower[1][0]}") # "johns"
+            self.mutate_variants_of_name_for_email.append(f"{self.splited_user_input_lower[0][0]}{self.splited_user_input_lower[1][0]}") # "js"
 
         return self
 
